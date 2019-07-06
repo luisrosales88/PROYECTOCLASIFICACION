@@ -3,6 +3,7 @@ from flask import Flask, request
 from keras.preprocessing import image
 from cnn_executor import cargarModelo
 import numpy as np
+from sklearn.externals.joblib import dump, load
 
 #Initialize the application service
 app = Flask(__name__)
