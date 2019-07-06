@@ -4,6 +4,7 @@ from keras.preprocessing import image
 from cnn_executor import cargarModelo
 import numpy as np
 from sklearn.externals.joblib import dump, load
+from sklearn.preprocessing import StandardScaler
 
 #Initialize the application service
 app = Flask(__name__)
@@ -51,11 +52,11 @@ def default():
 	nroCreditosCancelados = data.get("nroCreditosCancelados")
 	nroCreditosCastigados = data.get("nroCreditosCastigados")
 	
-	cliente = np.array([[saldo,estado,nroEntidades,saldoTotal,saldoMN,saldoME,lineaTC,utilizadoTC,entidadesNoReguladas,ultimoMonto,ultimaTasa,nroCreditosVigentes,nroCreditosCancelados,nroCreditosCastigados]])
+	cliente = np.array([saldo,estado,nroEntidades,saldoTotal,saldoMN,saldoME,lineaTC,utilizadoTC,entidadesNoReguladas,ultimoMonto,ultimaTasa,nroCreditosVigentes,nroCreditosCancelados,nroCreditosCastigados])
 	
 	scload=load('../model/std_scaler.bin')
 	
-	cliente = scload.transform(cliente)
+	cliente = scload.transform([cliente])
 	
 	with graph.as_default():
 		resultado = ""
