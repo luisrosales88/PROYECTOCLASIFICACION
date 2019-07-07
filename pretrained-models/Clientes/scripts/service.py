@@ -52,7 +52,7 @@ def default():
 	
 	cliente = np.array([saldo,estado,nroEntidades,saldoTotal,saldoMN,saldoME,lineaTC,utilizadoTC,entidadesNoReguladas,ultimoMonto,ultimaTasa,nroCreditosVigentes,nroCreditosCancelados,nroCreditosCastigados])
 	cliente = np.array([14065,0,1,1,22310,2,13333,0,0,2334,0,0,0,0])
-	scload=load('C:/Users/Luis/Desktop/PROYECTOCLASIFICACION/pretrained-models/Clientes/model/std_scaler.bin')
+	scload=load('../model/std_scaler.bin')
 	
 	cliente = scload.transform([cliente])
 	print(cliente)
