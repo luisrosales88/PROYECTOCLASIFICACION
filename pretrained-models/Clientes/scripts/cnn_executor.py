@@ -7,9 +7,6 @@
 # Cargando modelo de disco
 import tensorflow as tf
 from keras.models import model_from_json
-#from keras.models import load_model
-import matplotlib.pyplot as plt
-from keras.optimizers import Adam
 
 def cargarModelo():
     json_file = open('../model/model.json', 'r')

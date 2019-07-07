@@ -1,10 +1,8 @@
 #Import Flask
 from flask import Flask, request
-from keras.preprocessing import image
 from cnn_executor import cargarModelo
 import numpy as np
-from sklearn.externals.joblib import dump, load
-from sklearn.preprocessing import StandardScaler
+from sklearn.externals.joblib import load
 
 #Initialize the application service
 app = Flask(__name__)
@@ -53,11 +51,11 @@ def default():
 	nroCreditosCastigados = data.get("nroCreditosCastigados")
 	
 	cliente = np.array([saldo,estado,nroEntidades,saldoTotal,saldoMN,saldoME,lineaTC,utilizadoTC,entidadesNoReguladas,ultimoMonto,ultimaTasa,nroCreditosVigentes,nroCreditosCancelados,nroCreditosCastigados])
-	
-	scload=load('../model/std_scaler.bin')
+	cliente = np.array([14065,0,1,1,22310,2,13333,0,0,2334,0,0,0,0])
+	scload=load('C:/Users/Luis/Desktop/PROYECTOCLASIFICACION/pretrained-models/Clientes/model/std_scaler.bin')
 	
 	cliente = scload.transform([cliente])
-	
+	print(cliente)
 	with graph.as_default():
 		resultado = ""
 		score = loaded_model.predict(cliente)
