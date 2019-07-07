@@ -1,11 +1,17 @@
 #Import Flask
+import os
 from flask import Flask, request
+from flask_cors import CORS
 from cnn_executor import cargarModelo
 import numpy as np
 from sklearn.externals.joblib import load
 
+port = int(os.getenv('PORT', 5000))
+print ("Port recognized: ", port)
+
 #Initialize the application service
 app = Flask(__name__)
+CORS(app)
 global loaded_model, graph
 loaded_model, graph = cargarModelo()
 
@@ -18,7 +24,7 @@ def main_page():
 def rayosx():
 	return 'MODELO IDENTIFICAR CLIENTES DE ALTO VALOR!'
 
-@app.route('/clientes/default/', methods=['GET','POST'])
+@app.route('/clientes/altovalor/', methods=['GET','POST'])
 def default():
 	#print (request.args)
 	
@@ -51,10 +57,11 @@ def default():
 	nroCreditosCastigados = data.get("nroCreditosCastigados")
 	
 	cliente = np.array([saldo,estado,nroEntidades,saldoTotal,saldoMN,saldoME,lineaTC,utilizadoTC,entidadesNoReguladas,ultimoMonto,ultimaTasa,nroCreditosVigentes,nroCreditosCancelados,nroCreditosCastigados])
-	cliente = np.array([14065,0,1,1,22310,2,13333,0,0,2334,0,0,0,0])
+	print("\ncliente: ", cliente)
 	scload=load('../model/std_scaler.bin')
-	
 	cliente = scload.transform([cliente])
+	print("cliente Norm: ", cliente)
+	
 	print(cliente)
 	with graph.as_default():
 		resultado = ""
@@ -68,6 +75,6 @@ def default():
 		return resultado + ', score: ' + str(score[0])
 
 # Run de application
-app.run(host='0.0.0.0',port=4000)
+app.run(host='0.0.0.0',port=port)
 
 # http://35.225.31.46:5000/clientes/default/?saldo=0.0381469622561374&estado=0.166666666666667&nroEntidades=0.142857142857143&saldoTotal=0.0510709922089954&saldoMN=0.0510792191104299&saldoME=0&lineaTC=0&utilizadoTC=0&entidadesNoReguladas=0&ultimoMonto=0.0594356613968381&ultimaTasa=0.453197637894208&nroCreditosVigentes=0.25&nroCreditosCancelados=0.0555555555555556&nroCreditosCastigados=0
